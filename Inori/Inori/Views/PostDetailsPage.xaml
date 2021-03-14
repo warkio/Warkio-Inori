@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView" xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView" xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Inori.Views.PostDetailsPage"
+             Title="{Binding PostTitle}">
+    <ContentPage.Content>
+        
+        <StackLayout Spacing="20" Padding="15">
+            <ContentView x:Name="actIndBackground"
+             BackgroundColor="#ffff" Opacity="0.5"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1"
+             IsVisible="{Binding IsBusy}">
+                <ActivityIndicator x:Name="actInd"
+             Color="{StaticResource Primary}"
+             AbsoluteLayout.LayoutFlags="PositionProportional"
+             AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+             IsRunning="{Binding IsBusy}"
+             IsVisible="{Binding IsBusy}" />
+            </ContentView>
+            <StackLayout Spacing="20" Padding="15" VerticalOptions="Fill">
+                <!-- Carousel -->
+                <cards:CoverFlowView 
+                    ItemsSource="{Binding Images}"
+                    SelectedIndex="{Binding CurrentIndex}"
+                    PositionShiftValue="25"
+                    IsCyclical="false"
+                    HeightRequest="800"
+                    >
+                    <x:Arguments>
+                        <proc:CoverFlowProcessor ScaleFactor="0.5" OpacityFactor="0.25" />
+                    </x:Arguments>
+                    <cards:CoverFlowView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                       Margin="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Fill"
+                       Padding="0" 
+                       MinimumHeightRequest="2500"
+                       HasShadow="false"
+                       IsClippedToBounds="true"
+                       CornerRadius="10">
+                                <ffimage:CachedImage Source="{Binding .}" Aspect="AspectFit" HeightRequest="300"/>
+                            </Frame>
+                        </DataTemplate>
+                    </cards:CoverFlowView.ItemTemplate>
+
+
+                </cards:CoverFlowView>
+
+                <!-- Post content -->
+                <ScrollView
+                    VerticalOptions="Center"
+                    >
+                    <Label TextType="Html" Text="{Binding Content}">
+                    </Label>
+                </ScrollView>
+                
+                
+
+            </StackLayout>
+        </StackLayout>
+        
+    </ContentPage.Content>
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Download Images" 
+            Order="Secondary" 
+            Command="{Binding DownloadImagesCommand}"		
+            />
+        <ToolbarItem 
+            Text="View On Browser" 
+            Order="Secondary" 
+            Command="{Binding ViewOnBrowserCommand}"
+            />
+    </ContentPage.ToolbarItems>
+</ContentPage>

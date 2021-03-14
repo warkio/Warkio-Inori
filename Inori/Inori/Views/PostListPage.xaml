@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Inori.Views.PostListView"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:Inori.ViewModels"  
+             xmlns:model="clr-namespace:Inori.Models"  
+             x:Name="ListPostsPage">
+    <!-- Colors for both light and dark mode -->
+    <ContentPage.Resources>
+        <Color x:Key="CardLightColor">white</Color>
+        <Color x:Key="CardDarkColor">#2e2e2e</Color>
+    </ContentPage.Resources>
+    <RefreshView x:DataType="local:PostListViewModel" Command="{Binding LoadPostsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="PostsListView"
+                ItemsSource="{Binding Posts}"
+                RemainingItemsThresholdReachedCommand="{Binding LoadPostsCommand}"
+                RemainingItemsThreshold="5"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" x:DataType="model:Cards.PostListCardItem" BackgroundColor="White">
+                        <Frame HasShadow="True" BackgroundColor="{AppThemeBinding Light={StaticResource CardLightColor}, Dark={StaticResource CardDarkColor}}">
+                            <Grid Padding="10" x:DataType="model:Cards.PostListCardItem">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2"
+                                   Source="{Binding CoverImage }"
+                                   Aspect="AspectFill"
+                                   HeightRequest="60"
+                                   WidthRequest="60" />
+                                <Label Grid.Column="1"
+                                       Grid.Row="1"
+                                   Text="{Binding Post.Title.Rendered}"
+                                   FontAttributes="Bold" />
+                                <Label Grid.Column="1"
+                                   Text="{Binding TimeAgo}" />
+                            </Grid>
+                        </Frame>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:PostListViewModel}}, Path=PostTapped}"		
+                                    CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>
