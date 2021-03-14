@@ -1,6 +1,6 @@
 # Warkio Inori
 Inori is a (unofficial) App for [RandomC](https://randomc.net) writen in Xamarin Forms. Currently, is only made thinking on Android.
-![Inori Image](images/inori.png?raw=true)
+![Inori Image](images/Inori.png?raw=true)
 
 ## TODO
 - Download individual images
